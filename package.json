@@ -1,0 +1,40 @@
+{
+	"name": "socketeer",
+	"version": "0.1.0",
+	"author": "Nathan Cook <nathancookster@gmail.com>",
+	"description": "An attempt at a proxy server that can be controlled via JS to update URLs and recieve data.",
+	"contributors": [
+		{
+			"name": "Nathan Cook",
+			"email": "nathancookster@gmail.com"
+		}
+	],
+	"private": true,
+	"scripts": {
+		"start": "node app"
+	},
+	"respository": {
+		"type": "git",
+		"url": "https://github.com/nathancharles/socketeer"
+	},
+	"dependencies": {
+		"express": "~3.3.4",
+		"jade": "~0.34.0",
+		"request":"*",
+		"mongodb":"*",
+		"monk":"*"
+	},
+	"devDependencies": {
+		"grunt": "~0.4.1",
+		"grunt-develop": "~0.1.1",
+		"grunt-contrib-watch": "~0.4.4",
+		"grunt-env": "*",
+		"grunt-shell": "*"
+	},
+	"bundledDependencies": [
+		"noderunner"
+	],
+	"engines": {
+		"node": ">=0.8.9"
+	}
+}

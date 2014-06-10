@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Routes
+  for methods in routes
+    if methods.length > 1
+      h2= methods[0].method.toUpperCase()
+      table
+        tr
+          th Method
+          th URI
+          for route in methods
+            if route.path !== '*'
+              tr
+                td= route.method.toUpperCase()
+                td= route.path

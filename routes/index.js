@@ -9,7 +9,7 @@ var request = require('request');
 // GET
 exports.test = function(req, res) {
 	//modify the url in any way you want
-	var newurl = 'http://www.nathancharles.net/';
+	var newurl = 'http://www.google.com/';
 	res.cookie('host', newurl);
 	request(newurl).pipe(res);
 };

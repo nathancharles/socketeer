@@ -1,8 +1,11 @@
 doctype 5
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/css/style.css')
-    script(src='http://localhost:35729/livereload.js')
-  body
-    block content
+	head
+		script(src='https://cdn.socket.io/socket.io-1.0.4.js')
+		script(type='text/javascript').
+			var socket = io.connect('http://localhost:1991');
+			socket.on('news', function (data) {
+				console.log(data);
+			});
+	body
+		block content

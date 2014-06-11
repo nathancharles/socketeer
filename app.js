@@ -6,6 +6,7 @@
 
 var express = require('express'),
 	request = require('request'),
+	socketio = require('socket.io'),
 	routes = require('./routes'),
 	https = require('https'),
 	http = require('http'),
@@ -89,7 +90,9 @@ app.all('*', function(req, res, next) {
 
 // app.get('/id/:id', routes.get);
 // app.post('/id/:id', routes.post);
-app.get('/', routes.test);
+app.get('/', function(req, res) {
+	res.render('routes2', { routes: app.routes });
+});
 
 app.get('/routes', function(req, res) {
 	res.render('routes', { routes: app.routes });
@@ -99,10 +102,18 @@ app.get('/routes', function(req, res) {
  * Run the servers (HTTP/S)
  */
 
-http.createServer(app).listen(app.get('port'), function () {
+var server = http.createServer(app).listen(app.get('port'), function () {
 	console.log('\nSocketeer is soaring on port ' + app.get('port'));
 });
 
-https.createServer(sslOptions, app).listen(app.get('secure port'), function () {
-	console.log('Socketeer is soaring with protection on port ' + app.get('secure port'));
+
+// TODO: Use namespaced connections for each page opened
+var io = socketio(server);
+
+io.on('connection', function(socket) {
+	socket.emit('news', { hello: 'world' });
+	socket.on('page4', function(data) {
+		console.log(data);
+		io.emit('news', data);
+	});
 });

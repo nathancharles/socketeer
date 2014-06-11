@@ -21,6 +21,7 @@
 		"express": "~3.3.4",
 		"jade": "~0.34.0",
 		"request":"*",
+		"socket.io":"~1.0.0",
 		"mongodb":"*",
 		"monk":"*"
 	},

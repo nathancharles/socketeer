@@ -48,56 +48,41 @@
 	};
 
 
-	var SOCKETEER_URL = 'http://localhost:1991';
+	// Set the URL to the current window Host
+	var SOCKETEER_URL = window.location.protocol + '//' + window.location.host;
 
 	/**
 	 * @constructor
 	 * Creates Socketeer object.
 	 * If socket.io is not included, it will throw an error.
-	 * Checks for a pageId, creates and stores pageId if it doesn't exist.
+	 * Checks the current URL for pageId and stores it.
 	 * Sets up the socket.io connection.
 	 */
 	function Socketeer() {
+		var self = this;
 		if(!window.io) {
 			throw new Error('Socket.io is required to use Socketeer.');
 		}
 
-		this.pageId = cookies.readCookie('socketeer');
+		// self.pageId = window.location.pathname.split('/').slice(-1)[0];
+		self.pageId = 5;
 
-		if(!this.pageId) {
-			this.pageId = 5;
-			cookies.createCookie('socketeer', this.pageId);
-		}
+		self.socket = io.connect(SOCKETEER_URL);
 
-		this.socket = io.connect(SOCKETEER_URL);
+		self.socket.on(self.pageId, function(data) {
+			console.log(data);
+			self.handleData(data);
+		});
 	}
 
-	/**
-	 * Open a Socketeer page that returns the content of the given URL with the Socketeer wrapper.
-	 * @param  {String} url - The URL to proxy
-	 * @param  {Object} params - The parameters to pass
-	 */
-	Socketeer.prototype.openPage = function openPage(newurl, params) {
-		url = url + '?';
-		for(var key in params) {
-			if(params.hasOwnProperty(key)) {
-				url = url + key + '=' + params[key] + '&';
-			}
+	Socketeer.prototype.handleData = function handleData(data) {
+		if(data.url) {
+			window.location = data.url;
+		} else {
+			alert('Hello There');
 		}
-
-		var windowUrl = SOCKETEER_URL + '/' + this.pageId + '?url=' + url;
-
-		window.open(sUrl, 'Socketeer', 'resizable,scrollbars,status');
 	};
 
-	/**
-	 * Sends data via socket.io to the server to emit to the corresponding Socketeer page.
-	 * @param  {Object} data - The data to emit to the Socketeer page
-	 */
-	Socketeer.prototype.send = function send(data) {
-		this.socket.emit(this.pageId, data);
-	};
-
-	window.Socketeer = Socketeer;
+	window.Socketeer = new Socketeer();
 
 }(window));

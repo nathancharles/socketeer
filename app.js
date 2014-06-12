@@ -13,14 +13,6 @@ var express = require('express'),
 	path = require('path'),
 	fs = require('fs');
 
-var hskey = fs.readFileSync('local_ssl/hacksparrow-key.pem');
-var hscert = fs.readFileSync('local_ssl/hacksparrow-cert.pem');
-
-var sslOptions = {
-	key: hskey,
-	cert: hscert
-};
-
 var app = express();
 
 app.configure(function() {
@@ -88,7 +80,7 @@ app.all('*', function(req, res, next) {
 	next();
 });
 
-// app.get('/id/:id', routes.get);
+app.get('/id/:id', routes.socketeerProxy);
 // app.post('/id/:id', routes.post);
 app.get('/', function(req, res) {
 	res.render('routes2', { routes: app.routes });
@@ -111,9 +103,8 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 var io = socketio(server);
 
 io.on('connection', function(socket) {
-	socket.emit('news', { hello: 'world' });
-	socket.on('page4', function(data) {
+	socket.on('5', function(data) {
 		console.log(data);
-		io.emit('news', data);
+		io.emit('5', data);
 	});
 });

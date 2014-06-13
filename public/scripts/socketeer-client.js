@@ -78,11 +78,12 @@
 	 * @param  {Object} params - The parameters to pass
 	 */
 	Socketeer.prototype.openPage = function openPage(proxyUrl, params) {
-		proxyUrl = proxyUrl + '?';
-		for(var key in params) {
-			if(params.hasOwnProperty(key)) {
-				proxyUrl = proxyUrl + key + '=' + params[key] + '&';
-			}
+
+		if(params){
+			var paramKeys = Object.keys(params);
+			proxyUrl = proxyUrl + '?' + paramKeys.map(function(key) {
+				return key + '=' + params[key];
+			}).join('&');
 		}
 
 		var windowUrl = SOCKETEER_URL + '/id/' + this.pageId + '?url=' + proxyUrl;

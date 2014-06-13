@@ -75,11 +75,73 @@
 		});
 	}
 
+	/**
+	 * Function to create an input
+	 * @param  {String} type - The value for the type attribute
+	 * @param  {String} name - The value for the name attribute
+	 * @param  {String} value - The value for the value attribute
+	 * @return {Object} The input element created
+	 */
+	function _createInput(type, name, value) {
+		var input = window.document.createElement('input');
+		input.type = type;
+		input.name = name;
+		input.value = value;
+		return input;
+	}
+
+	/**
+	 * Function to create a form.
+	 * @param  {String} method - The value for the method attribute
+	 * @param  {String} url - The value for the action attribute
+	 * @param  {Object} payload - the data to be added to the form as inputs
+	 * @return {Object} The form element created
+	 */
+	function _createForm(method, url, payload) {
+		var form = window.document.createElement('form');
+		form.method = method;
+		form.action = url;
+		form.id = 'socketeer';
+		for(var key in payload) {
+			if(payload.hasOwnProperty(key)) {
+				form.appendChild(_createInput('hidden', key, payload[key]));
+			}
+		}
+		return form;
+	}
+
+	/**
+	 * Method to change the URL of the page.
+	 * @param  {String} url - The URL to update to
+	 */
+	function _redirectUrl(url) {
+		window.location = data.url;
+	}
+
+	/**
+	 * Function to create and submit a form.
+	 * @param  {String} method - The method to use for the form
+	 * @param  {String} url - The URL to submit the form to
+	 * @param  {Object} payload - the data to submit with the form
+	 */
+	function _submitForm(method, url, payload) {
+		_createForm(method, url, payload).submit();
+	}
+
+	/**
+	 * Performs the appropriate action based on the data emitted.
+	 * @param  {Object} data - The data emitted by the controlling page.
+	 */
 	Socketeer.prototype.handleData = function handleData(data) {
-		if(data.url) {
-			window.location = data.url;
-		} else {
-			alert('Hello There');
+		switch(true) {
+			case data.hasOwnProperty('redirect'):
+				_redirectUrl(data.redirect);
+				break;
+			case data.hasOwnProperty('form'):
+				_submitForm((data.form.method || 'POST'), data.form.url, data.form.payload);
+				break;
+			default:
+				console.log(data);
 		}
 	};
 

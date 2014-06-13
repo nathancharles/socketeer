@@ -59,8 +59,10 @@ app.configure(function() {
 
 	// Middleware to check host cookie and use it for relative requests
 	app.use(function(req, res, next) {
-		var host = getHostFromCookies(req) || '';
-		request(host+req.url).pipe(res);
+		var host = (getHostFromCookies(req) || '').replace('?','');
+		var path = (req.url || '').replace(/^\/id\//,'/');
+		console.log(host+path);
+		request(host+path).pipe(res);
 	});
 });
 

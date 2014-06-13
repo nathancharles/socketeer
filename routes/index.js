@@ -17,8 +17,7 @@ exports.socketeerProxy = function socketeerProxy(req, res) {
 	var newurl = req.cookies.host;
 	if(req.query.url) {
 		var tempUrl = url.parse(req.query.url);
-		newurl = tempUrl.protocol + '//' + tempUrl.host;
-		res.cookie('host', newurl);
+		res.cookie('host', tempUrl.protocol + '//' + tempUrl.host);
 	}
 	var x = request(newurl, function(){
 		buff = buff.replace('</head>', function(match) {

@@ -20,17 +20,15 @@
 	"dependencies": {
 		"express": "~3.3.4",
 		"jade": "~0.34.0",
-		"request":"*",
-		"socket.io":"~1.0.0",
-		"mongodb":"*",
-		"monk":"*"
+		"request":"~2.27.0",
+		"socket.io":"~1.0.0"
 	},
 	"devDependencies": {
 		"grunt": "~0.4.1",
 		"grunt-develop": "~0.1.1",
 		"grunt-contrib-watch": "~0.4.4",
-		"grunt-env": "*",
-		"grunt-shell": "*"
+		"grunt-env": "~0.4.0",
+		"grunt-shell": "~0.6.0"
 	},
 	"bundledDependencies": [
 		"noderunner"

@@ -1,6 +1,7 @@
 /*jshint devel:true, node:true */
 
-var request = require('request');
+var request = require('request'),
+	url = require('url');
 
 var SCRIPTS = [
 '<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.0.4.js"></script>',
@@ -13,7 +14,11 @@ var SCRIPTS = [
 
 // GET
 exports.socketeerProxy = function socketeerProxy(req, res) {
-	var newurl = req.query.url;
+	var newurl = req.cookies.host;
+	if(req.query.url) {
+		var tempUrl = url.parse(req.query.url);
+		newurl = tempUrl.protocol + '//' + tempUrl.host;
+	}
 	res.cookie('host', newurl);
 	var x = request(newurl, function(){
 		buff = buff.replace('</head>', function(match) {

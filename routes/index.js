@@ -18,8 +18,8 @@ exports.socketeerProxy = function socketeerProxy(req, res) {
 	if(req.query.url) {
 		var tempUrl = url.parse(req.query.url);
 		newurl = tempUrl.protocol + '//' + tempUrl.host;
+		res.cookie('host', newurl);
 	}
-	res.cookie('host', newurl);
 	var x = request(newurl, function(){
 		buff = buff.replace('</head>', function(match) {
 			return SCRIPTS.join('') + match;

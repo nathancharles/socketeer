@@ -70,7 +70,6 @@
 		self.socket = io.connect(SOCKETEER_URL);
 
 		self.socket.on(self.pageId, function(data) {
-			console.log(data);
 			self.handleData(data);
 		});
 	}
@@ -115,7 +114,7 @@
 	 * @param  {String} url - The URL to update to
 	 */
 	function _redirectUrl(url) {
-		window.location = data.url;
+		window.location = url;
 	}
 
 	/**

@@ -7,6 +7,7 @@
 var express = require('express'),
 	request = require('request'),
 	socketio = require('socket.io'),
+	socketioMiddleware = require('socketio-wildcard')(),
 	routes = require('./routes'),
 	https = require('https'),
 	http = require('http'),
@@ -101,10 +102,13 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 
 // TODO: Use namespaced connections for each page opened
 var io = socketio(server);
+io.use(socketioMiddleware);
 
 io.on('connection', function(socket) {
-	socket.on('5', function(data) {
-		console.log(data);
-		io.emit('5', data);
+	socket.on('*', function(socketData) {
+		var channel = socketData.data[0];
+		var message = socketData.data[1];
+		console.log(channel, message);
+		io.emit(channel, message);
 	});
 });

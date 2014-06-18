@@ -72,7 +72,7 @@
 	function _createForm(method, action, payload) {
 		var form = window.document.createElement('form');
 		form.method = method;
-		form.action = url;
+		form.action = action;
 		form.id = 'socketeer';
 		for(var key in payload) {
 			if(payload.hasOwnProperty(key)) {

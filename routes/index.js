@@ -14,21 +14,22 @@ var SCRIPTS = [
 
 // GET
 exports.socketeerProxy = function socketeerProxy(req, res) {
-	var newurl = req.cookies.host;
-	if(req.query.url) {
-		var tempUrl = url.parse(req.query.url);
+	var proxyUrl = req.cookies.host;
+	if(req.body.url) {
+		var tempUrl = url.parse(req.body.url);
+		var proxyUrl = req.body.url;
 		res.cookie('host', tempUrl.protocol + '//' + tempUrl.host);
 	}
-	var x = request(newurl, function(){
-		buff = buff.replace('</head>', function(match) {
+	
+	var queryParams = Object.keys(req.body).map(function(value) {
+		return value + '=' + req.body[value];
+	}).join('&');
+	proxyUrl = proxyUrl + '?' + queryParams;
+	
+	var x = request(proxyUrl, function(error, response, body){
+		var html = response.body.replace('</head>', function(match) {
 			return SCRIPTS.join('') + match;
 		});
-		res.send(buff);
-	});
-
-	var buff = '';
-
-	x.on('data', function (chunk) {
-		buff = buff + chunk.toString();
+		res.send(html);
 	});
 };

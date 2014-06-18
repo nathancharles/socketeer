@@ -47,33 +47,6 @@
 		cookies.createCookie(name,"",-1);
 	};
 
-
-	// Set the URL to the current window Host
-	var SOCKETEER_URL = window.location.protocol + '//' + window.location.host;
-
-	/**
-	 * @constructor
-	 * Creates Socketeer object.
-	 * If socket.io is not included, it will throw an error.
-	 * Checks the current URL for pageId and stores it.
-	 * Sets up the socket.io connection.
-	 */
-	function Socketeer() {
-		var self = this;
-		if(!window.io) {
-			throw new Error('Socket.io is required to use Socketeer.');
-		}
-
-		// self.pageId = window.location.pathname.split('/').slice(-1)[0];
-		self.pageId = 5;
-
-		self.socket = io.connect(SOCKETEER_URL);
-
-		self.socket.on(self.pageId, function(data) {
-			self.handleData(data);
-		});
-	}
-
 	/**
 	 * Function to create an input
 	 * @param  {String} type - The value for the type attribute
@@ -125,6 +98,33 @@
 	 */
 	function _submitForm(method, action, payload) {
 		_createForm(method, action, payload).submit();
+	}
+
+
+	// Set the URL to the current window Host
+	var SOCKETEER_URL = window.location.protocol + '//' + window.location.host;
+
+	/**
+	 * @constructor
+	 * Creates Socketeer object.
+	 * If socket.io is not included, it will throw an error.
+	 * Checks the current URL for pageId and stores it.
+	 * Sets up the socket.io connection.
+	 */
+	function Socketeer() {
+		var self = this;
+		if(!window.io) {
+			throw new Error('Socket.io is required to use Socketeer.');
+		}
+
+		// self.pageId = window.location.pathname.split('/').slice(-1)[0];
+		self.pageId = 5;
+
+		self.socket = io.connect(SOCKETEER_URL);
+
+		self.socket.on(self.pageId, function(data) {
+			self.handleData(data);
+		});
 	}
 
 	/**

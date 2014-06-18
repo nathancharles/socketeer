@@ -117,9 +117,14 @@
 	Socketeer.prototype.openPage = function openPage(url, payload, method) {
 		var socketeerUrl = SOCKETEER_URL + '/id/' + this.pageId;
 		
+		method = (method || 'GET').toLowerCase();
+		if(VALID_METHODS.indexOf(method) === -1) {
+			throw new Error(method + ' is not an accepted method.');
+		}
+		
 		payload = payload || {};
 		payload.url = url;
-		payload.method = (method || 'GET').toLowerCase();
+		payload.method = method;
 
 		var form = _createForm('POST', socketeerUrl, payload);
 		form.target = '_blank';

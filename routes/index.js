@@ -3,16 +3,12 @@
 var request = require('request'),
 	url = require('url');
 
-var SCRIPTS = [
+var CONTENT_TO_INJECT = [
 '<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.0.4.js"></script>',
 '<script type="text/javascript" src="http://localhost:1991/scripts/socketeer-server.js"></script>'
 ];
 
-/*
- * GET home page.
- */
-
-// GET
+// POST
 exports.socketeerProxy = function socketeerProxy(req, res) {
 	var proxyUrl = req.cookies.host;
 	if(req.body.url) {
@@ -21,6 +17,7 @@ exports.socketeerProxy = function socketeerProxy(req, res) {
 		res.cookie('host', tempUrl.protocol + '//' + tempUrl.host);
 	}
 	
+	// Add payload as query parameters
 	var queryParams = Object.keys(req.body).map(function(value) {
 		return value + '=' + req.body[value];
 	}).join('&');
@@ -28,7 +25,7 @@ exports.socketeerProxy = function socketeerProxy(req, res) {
 	
 	var x = request(proxyUrl, function(error, response, body){
 		var html = response.body.replace('</head>', function(match) {
-			return SCRIPTS.join('') + match;
+			return CONTENT_TO_INJECT.join('') + match;
 		});
 		res.send(html);
 	});

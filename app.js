@@ -84,7 +84,7 @@ app.all('*', function(req, res, next) {
 	next();
 });
 
-app.get('/id/:id', routes.socketeerProxy);
+app.post('/id/:id', routes.socketeerProxy);
 // app.post('/id/:id', routes.post);
 
 app.get('/routes', function(req, res) {

@@ -47,8 +47,44 @@
 		cookies.createCookie(name,"",-1);
 	};
 
+	/**
+	 * Function to create an input
+	 * @param  {String} type - The value for the type attribute
+	 * @param  {String} name - The value for the name attribute
+	 * @param  {String} value - The value for the value attribute
+	 * @return {Object} The input element created
+	 */
+	function _createInput(type, name, value) {
+		var input = window.document.createElement('input');
+		input.type = type;
+		input.name = name;
+		input.value = value;
+		return input;
+	}
+
+	/**
+	 * Function to create a form.
+	 * @param  {String} method - The value for the method attribute
+	 * @param  {String} action - The value for the action attribute
+	 * @param  {Object} payload - the data to be added to the form as inputs
+	 * @return {Object} The form element created
+	 */
+	function _createForm(method, action, payload) {
+		var form = window.document.createElement('form');
+		form.method = method;
+		form.action = action;
+		form.id = 'socketeer';
+		for(var key in payload) {
+			if(payload.hasOwnProperty(key)) {
+				form.appendChild(_createInput('hidden', key, payload[key]));
+			}
+		}
+		return form;
+	}
+
 
 	var SOCKETEER_URL = 'http://localhost:1991';
+	var VALID_METHODS = ['get', 'post'];
 
 	/**
 	 * @constructor
@@ -75,20 +111,19 @@
 	/**
 	 * Open a Socketeer page that returns the content of the given URL with the Socketeer wrapper.
 	 * @param  {String} url - The URL to proxy
-	 * @param  {Object} params - The parameters to pass
+	 * @param  {Object} payload - The parameters to submit to the proxied URL
+	 * @param  {String} method - The method to use when proxying the given URL
 	 */
-	Socketeer.prototype.openPage = function openPage(proxyUrl, params) {
+	Socketeer.prototype.openPage = function openPage(url, payload, method) {
+		var socketeerUrl = SOCKETEER_URL + '/id/' + this.pageId;
+		
+		payload = payload || {};
+		payload.url = url;
+		payload.method = (method || 'GET').toLowerCase();
 
-		if(params){
-			var paramKeys = Object.keys(params);
-			proxyUrl = proxyUrl + '?' + paramKeys.map(function(key) {
-				return key + '=' + params[key];
-			}).join('&');
-		}
-
-		var windowUrl = SOCKETEER_URL + '/id/' + this.pageId + '?url=' + proxyUrl;
-
-		window.open(windowUrl, 'Socketeer', 'resizable,scrollbars,status');
+		var form = _createForm('POST', socketeerUrl, payload);
+		form.target = '_blank';
+		form.submit();
 	};
 
 	/**

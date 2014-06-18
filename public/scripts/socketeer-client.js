@@ -84,7 +84,6 @@
 
 
 	var SOCKETEER_URL = 'http://localhost:1991';
-	var VALID_METHODS = ['get', 'post'];
 
 	/**
 	 * @constructor
@@ -111,21 +110,14 @@
 	/**
 	 * Open a Socketeer page that returns the content of the given URL with the Socketeer wrapper.
 	 * @param  {String} url - The URL to proxy
-	 * @param  {Object} payload - The parameters to submit to the proxied URL
-	 * @param  {String} method - The method to use when proxying the given URL
+	 * @param  {Object} payload - The parameters to submit to socketeer
 	 */
-	Socketeer.prototype.openPage = function openPage(url, payload, method) {
+	Socketeer.prototype.openPage = function openPage(url, payload) {
 		var socketeerUrl = SOCKETEER_URL + '/id/' + this.pageId;
-		
-		method = (method || 'GET').toLowerCase();
-		if(VALID_METHODS.indexOf(method) === -1) {
-			throw new Error(method + ' is not an accepted method.');
-		}
 		
 		payload = payload || {};
 		payload.url = url;
-		payload.method = method;
-
+		
 		var form = _createForm('POST', socketeerUrl, payload);
 		form.target = '_blank';
 		form.submit();

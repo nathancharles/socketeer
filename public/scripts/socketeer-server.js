@@ -92,11 +92,11 @@
 	/**
 	 * Function to create a form.
 	 * @param  {String} method - The value for the method attribute
-	 * @param  {String} url - The value for the action attribute
+	 * @param  {String} action - The value for the action attribute
 	 * @param  {Object} payload - the data to be added to the form as inputs
 	 * @return {Object} The form element created
 	 */
-	function _createForm(method, url, payload) {
+	function _createForm(method, action, payload) {
 		var form = window.document.createElement('form');
 		form.method = method;
 		form.action = url;
@@ -123,8 +123,8 @@
 	 * @param  {String} url - The URL to submit the form to
 	 * @param  {Object} payload - the data to submit with the form
 	 */
-	function _submitForm(method, url, payload) {
-		_createForm(method, url, payload).submit();
+	function _submitForm(method, action, payload) {
+		_createForm(method, action, payload).submit();
 	}
 
 	/**
@@ -137,7 +137,7 @@
 				_redirectUrl(data.redirect);
 				break;
 			case data.hasOwnProperty('form'):
-				_submitForm((data.form.method || 'POST'), data.form.url, data.form.payload);
+				_submitForm((data.form.method || 'POST'), data.form.action, data.form.payload);
 				break;
 			default:
 				console.log(data);

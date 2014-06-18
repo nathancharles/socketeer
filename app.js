@@ -108,7 +108,6 @@ io.on('connection', function(socket) {
 	socket.on('*', function(socketData) {
 		var channel = socketData.data[0];
 		var message = socketData.data[1];
-		console.log(channel, message);
 		io.emit(channel, message);
 	});
 });

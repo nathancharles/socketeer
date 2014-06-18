@@ -23,7 +23,7 @@ exports.socketeerProxy = function socketeerProxy(req, res) {
 	}).join('&');
 	proxyUrl = proxyUrl + '?' + queryParams;
 	
-	var x = request(proxyUrl, function(error, response, body){
+	request(proxyUrl, function(error, response, body){
 		var html = response.body.replace('</head>', function(match) {
 			return CONTENT_TO_INJECT.join('') + match;
 		});

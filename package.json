@@ -2,7 +2,7 @@
 	"name": "socketeer",
 	"version": "0.1.0",
 	"author": "Nathan Cook <nathancookster@gmail.com>",
-	"description": "An attempt at a proxy server that can be controlled via JS to update URLs and recieve data.",
+	"description": "A proxy server that can be controlled via JS to update URLs and recieve data.",
 	"contributors": [
 		{
 			"name": "Nathan Cook",

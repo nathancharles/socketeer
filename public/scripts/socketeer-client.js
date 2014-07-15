@@ -136,14 +136,44 @@
 		var form = _createForm('POST', SOCKETEER_URL, payload);
 		form.target = '_blank';
 		form.submit();
+		console.log(form);
 	};
 
 	/**
 	 * Sends data via socket.io to the server to emit to the corresponding Socketeer page.
 	 * @param  {Object} data - The data to emit to the Socketeer page
 	 */
-	Socketeer.prototype.send = function send(data) {
+	Socketeer.prototype._send = function _send(data) {
 		this.socket.emit(this.pageId, data);
+	};
+
+	/**
+	 * Method to redirect to given URL.
+	 * @param  {String} url - The URL to switch the socketeer page to
+	 */
+	Socketeer.prototype.redirect = function redirect(url) {
+		var payload = {
+			'redirect': url
+		};
+		this._send(payload);
+	};
+
+	/**
+	 * Method to send form data to be submitted on the socketeer page.
+	 * @param  {String} method - Method to use when submitting form. Defaults to POST
+	 * @param  {String} action - The URL to submit the form data to
+	 * @param  {Object} data   - The data to be submitted with the form
+	 */
+	Socketeer.prototype.form = function form(method, action, data) {
+		data = data || {};
+		var payload = {
+			'form': {
+				'method': method || 'POST',
+				'action': action,
+				'payload': data
+			}
+		};
+		this._send(payload);
 	};
 
 	window.Socketeer = Socketeer;

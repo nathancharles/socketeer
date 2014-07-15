@@ -137,7 +137,7 @@
 				_redirectUrl(data.redirect);
 				break;
 			case data.hasOwnProperty('form'):
-				_submitForm((data.form.method || 'POST'), data.form.action, data.form.payload);
+				_submitForm(data.form.method, data.form.action, data.form.payload);
 				break;
 			default:
 				console.log(data);

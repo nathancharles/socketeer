@@ -59,5 +59,9 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-env');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['env', 'develop', 'watch']);
+	grunt.registerTask('default', [
+		'env',
+		'develop',
+		'watch'
+	]);
 };

@@ -12,7 +12,8 @@ var express = require('express'),
 	https = require('https'),
 	http = require('http'),
 	path = require('path'),
-	fs = require('fs');
+	fs = require('fs'),
+	uuid = require('node-uuid');
 
 var app = express();
 
@@ -84,8 +85,11 @@ app.all('*', function(req, res, next) {
 	next();
 });
 
-app.post('/id/:id', routes.socketeerProxy);
-// app.post('/id/:id', routes.post);
+app.post('/', routes.socketeerProxy);
+
+app.get('/uuid', function(req, res) {
+	res.send(uuid.v4());
+});
 
 app.get('/routes', function(req, res) {
 	res.render('routes', { routes: app.routes });

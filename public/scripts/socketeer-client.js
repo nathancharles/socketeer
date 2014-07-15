@@ -10,13 +10,13 @@
 	 * Create a cookie.
 	 * @param  {String} name - The name of the cookie
 	 * @param  {String} value - The value to be stored in the cookie
-	 * @param  {Integer} days - The lifespan in days for the cookie
+	 * @param  {Integer} hours - The lifespan in hours for the cookie
 	 */
-	cookies.createCookie = function(name,value,days) {
+	cookies.createCookie = function(name,value,hours) {
 		var expires;
-		if (days) {
+		if (hours) {
 			var date = new Date();
-			date.setTime(date.getTime()+(days*24*60*60*1000));
+			date.setTime(date.getTime()+(hours*60*60*1000));
 			expires = "; expires="+date.toGMTString();
 		}
 		else expires = "";
@@ -85,6 +85,20 @@
 
 	var SOCKETEER_URL = 'http://localhost:1991';
 
+	function _ajaxGet(url, callback) {
+		if(typeof callback !== 'function') {
+			throw new Error('The callback specified is not a function.');
+		}
+		var httpRequest = new XMLHttpRequest();
+		httpRequest.onreadystatechange = function() {
+			if(httpRequest.readyState === 4) {
+				callback(httpRequest.responseText);
+			}
+		};
+		httpRequest.open('GET', url);
+		httpRequest.send();
+	}
+
 	/**
 	 * @constructor
 	 * Creates Socketeer object.
@@ -100,8 +114,10 @@
 		this.pageId = cookies.readCookie('socketeer');
 
 		if(!this.pageId) {
-			this.pageId = 5;
-			cookies.createCookie('socketeer', this.pageId);
+			_ajaxGet(SOCKETEER_URL + '/uuid', function(response) {
+				this.pageId = response;
+				cookies.createCookie('socketeer', this.pageId, 1);
+			});
 		}
 
 		this.socket = io.connect(SOCKETEER_URL);
@@ -113,12 +129,11 @@
 	 * @param  {Object} payload - The parameters to submit to socketeer
 	 */
 	Socketeer.prototype.openPage = function openPage(url, payload) {
-		var socketeerUrl = SOCKETEER_URL + '/id/' + this.pageId;
-		
 		payload = payload || {};
 		payload.url = url;
-		
-		var form = _createForm('POST', socketeerUrl, payload);
+		payload.pageId = this.pageId;
+
+		var form = _createForm('POST', SOCKETEER_URL, payload);
 		form.target = '_blank';
 		form.submit();
 	};

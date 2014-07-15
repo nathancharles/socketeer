@@ -10,13 +10,13 @@
 	 * Create a cookie.
 	 * @param  {String} name - The name of the cookie
 	 * @param  {String} value - The value to be stored in the cookie
-	 * @param  {Integer} days - The lifespan in days for the cookie
+	 * @param  {Integer} hours - The lifespan in hours for the cookie
 	 */
-	cookies.createCookie = function(name,value,days) {
+	cookies.createCookie = function(name,value,hours) {
 		var expires;
-		if (days) {
+		if (hours) {
 			var date = new Date();
-			date.setTime(date.getTime()+(days*24*60*60*1000));
+			date.setTime(date.getTime()+(hours*60*60*1000));
 			expires = "; expires="+date.toGMTString();
 		}
 		else expires = "";
@@ -118,7 +118,7 @@
 		}
 
 		// self.pageId = window.location.pathname.split('/').slice(-1)[0];
-		self.pageId = 5;
+		self.pageId = cookies.readCookie('pageId');
 
 		self.socket = io.connect(SOCKETEER_URL);
 

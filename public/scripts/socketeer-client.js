@@ -83,7 +83,7 @@
 	}
 
 
-	var SOCKETEER_URL = 'http://ncook-ws.dev.norvax.net:1991';
+	var SOCKETEER_URL = 'http://localhost:1991';
 
 	/**
 	 * Generate a UUID string for the socketeer connection.

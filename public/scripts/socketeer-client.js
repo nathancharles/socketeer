@@ -83,7 +83,7 @@
 	}
 
 
-	var SOCKETEER_URL = 'http://localhost:1991';
+	var SOCKETEER_URL = 'http://ncook-ws.dev.norvax.net:1991';
 
 	/**
 	 * Generate a UUID string for the socketeer connection.
@@ -133,6 +133,8 @@
 
 		var form = _createForm('POST', SOCKETEER_URL, payload);
 		form.target = '_blank';
+		form.style.display = 'none';
+		window.document.body.appendChild(form);
 		form.submit();
 	};
 

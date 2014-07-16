@@ -12,8 +12,7 @@ var express = require('express'),
 	https = require('https'),
 	http = require('http'),
 	path = require('path'),
-	fs = require('fs'),
-	uuid = require('node-uuid');
+	fs = require('fs');
 
 var app = express();
 
@@ -80,16 +79,12 @@ app.configure(function() {
 // http://enable-cors.org/server_expressjs.html
 app.all('*', function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+	res.header('Access-Control-Allow-Methods', 'GET,POST');
 	res.header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
 	next();
 });
 
 app.post('/', routes.socketeerProxy);
-
-app.get('/uuid', function(req, res) {
-	res.send(uuid.v4());
-});
 
 app.get('/routes', function(req, res) {
 	res.render('routes', { routes: app.routes });

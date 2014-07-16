@@ -85,18 +85,18 @@
 
 	var SOCKETEER_URL = 'http://localhost:1991';
 
-	function _ajaxGet(url, callback) {
-		if(typeof callback !== 'function') {
-			throw new Error('The callback specified is not a function.');
-		}
-		var httpRequest = new XMLHttpRequest();
-		httpRequest.onreadystatechange = function() {
-			if(httpRequest.readyState === 4) {
-				callback(httpRequest.responseText);
-			}
-		};
-		httpRequest.open('GET', url);
-		httpRequest.send();
+	/**
+	 * Generate a UUID string for the socketeer connection.
+
+	 * @see http://stackoverflow.com/a/2117523/1383243
+	 *
+	 * @return {String} The UUID value
+	 */
+	function _generateUUID() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
+			return v.toString(16);
+		});
 	}
 
 	/**
@@ -114,10 +114,8 @@
 		this.pageId = cookies.readCookie('socketeer');
 
 		if(!this.pageId) {
-			_ajaxGet(SOCKETEER_URL + '/uuid', function(response) {
-				this.pageId = response;
-				cookies.createCookie('socketeer', this.pageId, 1);
-			});
+			this.pageId = _generateUUID();
+			cookies.createCookie('socketeer', this.pageId, 1);
 		}
 
 		this.socket = io.connect(SOCKETEER_URL);

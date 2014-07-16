@@ -136,7 +136,6 @@
 		var form = _createForm('POST', SOCKETEER_URL, payload);
 		form.target = '_blank';
 		form.submit();
-		console.log(form);
 	};
 
 	/**

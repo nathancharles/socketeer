@@ -143,7 +143,8 @@
 	 * @param  {Object} data - The data to emit to the Socketeer page
 	 */
 	Socketeer.prototype._send = function _send(data) {
-		this.socket.emit(this.pageId, data);
+		data.id = this.pageId;
+		this.socket.emit('socketeer', data);
 	};
 
 	/**

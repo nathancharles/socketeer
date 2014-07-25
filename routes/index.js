@@ -4,7 +4,7 @@ var request = require('request'),
 	url = require('url');
 
 var CONTENT_TO_INJECT = [
-'<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.0.4.js"></script>',
+'<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>',
 '<script type="text/javascript" src="http://localhost:1991/scripts/socketeer-server.js"></script>'
 ];
 

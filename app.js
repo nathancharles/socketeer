@@ -1,4 +1,6 @@
 /*jshint devel:true, node:true */
+/*globals unescape */
+'use strict';
 
 /**
  * Module dependencies.
@@ -9,10 +11,8 @@ var express = require('express'),
 	socketio = require('socket.io'),
 	socketioMiddleware = require('socketio-wildcard')(),
 	routes = require('./routes'),
-	https = require('https'),
 	http = require('http'),
-	path = require('path'),
-	fs = require('fs');
+	path = require('path');
 
 var app = express();
 
@@ -27,7 +27,6 @@ app.configure(function() {
 
 	app.use(express.logger(function(tokens, req, res) {
 		var status = res.statusCode,
-			len = parseInt(res.getHeader('Content-Length'), 10),
 			color = 32,
 			now = new Date();
 
@@ -54,7 +53,7 @@ app.configure(function() {
 	app.use(express.static(path.join(__dirname, 'public')));
 
 	function getHostFromCookies(req){
-		var re = new RegExp("host=([^;]+)");
+		var re = new RegExp('host=([^;]+)');
 		var value = re.exec(req.headers.cookie);
 		return (value !== null) ? unescape(value[1]) : null;
 	}
@@ -100,13 +99,20 @@ var server = http.createServer(app).listen(app.get('port'), function () {
 
 
 // TODO: Use namespaced connections for each page opened
-var io = socketio(server);
-io.use(socketioMiddleware);
+var io = socketio.listen(server);
+io.configure(function () {
+	io.set('transports', [
+		'websocket',
+		'flashsocket',
+		'htmlfile',
+		'xhr-polling',
+		'jsonp-polling'
+	]);
+});
 
-io.on('connection', function(socket) {
-	socket.on('*', function(socketData) {
-		var channel = socketData.data[0];
-		var message = socketData.data[1];
-		io.emit(channel, message);
+io.sockets.on('connection', function(socket) {
+	socket.on('socketeer', function(socketData) {
+		var channel = socketData.id;
+		io.sockets.emit(channel, socketData);
 	});
 });
